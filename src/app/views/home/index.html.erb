@@ -1,0 +1,125 @@
+<!-- Siri Sajja -->
+<!-- Project name: Assignment 2-C: Analysis and Design -->
+<!-- Description (project): Volunteer Tracker UI -->
+<!-- Filename: index.html.erb -->
+<!-- Last modified on: March 30, 2026 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Volunteer Tracker</title>
+
+    <style>
+        header {
+            background-color: rgb(43, 96, 132);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+            font-family: Arial;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        select, button {
+            margin: 5px 0;
+        }
+    </style>
+
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Add popup behavior to buttons
+            document.getElementById("checkInBtn").onclick = () => {
+                fetch("/hours/checkin", { method: "POST", credentials: "same-origin" })
+                    .then(res => res.json())
+                    .then(data => alert(data.message || "Check In successful!"))
+                    .catch(err => { console.error(err); alert("Error during Check In"); });
+            };
+
+            document.getElementById("checkOutBtn").onclick = () => {
+                fetch("/hours/checkout", { method: "POST", credentials: "same-origin" })
+                    .then(res => res.json())
+                    .then(data => alert(data.message || "Check Out successful!"))
+                    .catch(err => { console.error(err); alert("Error during Check Out"); });
+            };
+
+            document.getElementById("approveBtn").onclick = () => {
+                fetch("/hours/approve", { method: "POST", credentials: "same-origin" })
+                    .then(res => res.json())
+                    .then(data => alert(data.message || "Hours Approved!"))
+                    .catch(err => { console.error(err); alert("Error approving hours"); });
+            };
+
+            document.getElementById("createEventBtn").onclick = () => {
+                fetch("/events/create", { method: "POST", credentials: "same-origin" })
+                    .then(res => res.json())
+                    .then(data => alert(data.message || "Event Created!"))
+                    .catch(err => { console.error(err); alert("Error creating event"); });
+            };
+
+        });
+    </script>
+</head>
+
+<body>
+
+<header>Volunteer Tracker</header>
+
+<main>
+    <h2>Volunteer History</h2>
+
+    <label>Choose a time range:</label>
+    <select id="filterDropdown">
+        <option value="all" selected>All Time</option>
+        <option value="year">Past Year</option>
+        <option value="month">Past Month</option>
+    </select>
+
+    <h3 id="totalHours">Total Hours: 0</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Hours</th>
+            </tr>
+        </thead>
+        <tbody id="historyTable">
+            <tr><td colspan="3">Table disabled for now</td></tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h3>Event Actions (Partial)</h3>
+    <button id="checkInBtn">Check In (QR)</button>
+    <button id="checkOutBtn">Check Out (QR)</button>
+
+    <hr>
+
+    <h3>Admin Actions (Partial)</h3>
+    <button id="approveBtn">Approve Hours</button>
+
+    <hr>
+
+    <h3>Create Event (Partial)</h3>
+    <button id="createEventBtn">Create Event</button>
+</main>
+
+</body>
+</html>
